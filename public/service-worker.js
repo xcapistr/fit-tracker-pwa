@@ -1,6 +1,7 @@
 const CACHE_NAME = 'fit-tracker'
 
 const FILES = [
+  '/',
   '/index.html',
   '/favicon.png',
   '/global.css',
