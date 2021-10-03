@@ -1,6 +1,6 @@
 <script>
   import { chart } from 'svelte-apexcharts'
-
+  export let name
   export let series
   export let height
 
@@ -44,7 +44,7 @@
 </script>
 
 <div class="card">
-  <h2>Weight vs Fat</h2>
+  <h2>{name}</h2>
   <div use:chart={options} />
 </div>
 
