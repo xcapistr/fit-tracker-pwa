@@ -1,14 +1,19 @@
 <script>
+  export let user
 </script>
 
 <div class="header">
   <div class="left">
-    <button>+</button>
+    <pwa-install style="margin: 0 auto" />
   </div>
   <div class="center">
     <h1>FitTracker</h1>
   </div>
-  <div class="right"><pwa-install style="margin: 0 auto" /></div>
+  <div class="right">
+    <button class="profile">
+      <img src={user?.photoURL} alt="profile" />
+    </button>
+  </div>
 </div>
 
 <style>
@@ -32,7 +37,7 @@
   .right {
     width: 50px;
   }
-  .right {
+  .left {
     padding-top: 5px;
   }
 
@@ -44,21 +49,21 @@
     text-align: center;
   }
 
-  button {
+  button.profile {
     height: 40px;
     width: 40px;
-    line-height: 30px;
-    font-size: 20px;
-    padding: 5px;
     margin: 0;
     border: none;
     outline: none;
     border-radius: 50%;
     background-color: transparent;
-    color: #fff;
+    overflow: hidden;
+    padding: 0;
   }
 
-  button:active {
-    background-color: rgba(255, 255, 255, 0.1);
+  .profile > img {
+    width: 40px;
+    height: 40px;
   }
+
 </style>

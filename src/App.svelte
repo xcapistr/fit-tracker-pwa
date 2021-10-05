@@ -1,13 +1,22 @@
 <script>
   import Header from './components/Header.svelte'
   import Content from './components/Content.svelte'
+  import Login from './components/Login.svelte'
+
+  let user = {}
+
+  const setUser = newUser => {
+    user = { ...newUser }
+  }
 </script>
 
-<style>
-
-</style>
-
 <main>
-  <Header />
-  <Content />
+  {#if Object.keys(user).length == 0}
+    <Login {setUser} />
+  {:else}
+    <Header {user} />
+    <Content {user} />
+  {/if}
 </main>
+
+<style></style>
