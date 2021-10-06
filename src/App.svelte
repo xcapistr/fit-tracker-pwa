@@ -1,5 +1,4 @@
 <script>
-  import Header from './components/Header.svelte'
   import Content from './components/Content.svelte'
   import Login from './components/Login.svelte'
 
@@ -14,7 +13,6 @@
   {#if Object.keys(user).length == 0}
     <Login {setUser} />
   {:else}
-    <Header {user} />
     <Content {user} />
   {/if}
 </main>

@@ -25,6 +25,13 @@
         name: signInResult.user.displayName,
         photoURL: signInResult.user.photoURL
     })
+
+    console.log({
+        accessToken: signInResult.user.accessToken,
+        uid: signInResult.user.uid,
+        name: signInResult.user.displayName,
+        photoURL: signInResult.user.photoURL
+    });
   }
 
   // const logIn = () => {

@@ -1,10 +1,25 @@
 <script>
+  import { fly } from 'svelte/transition'
+
   export let user
+  export let isTableOpen
+  export let goBack
 </script>
 
 <div class="header">
   <div class="left">
-    <pwa-install style="margin: 0 auto" />
+    {#if isTableOpen}
+      <button
+        class="back"
+        on:click={goBack}
+        in:fly={{ x: -40, delay: 300 }}
+        out:fly={{ x: -40 }}
+      >
+        <img src="/images/icons/chevron-back-outline.svg" alt="back" />
+      </button>
+    {/if}
+
+    <!-- <pwa-install style="margin: 0 auto" /> -->
   </div>
   <div class="center">
     <h1>FitTracker</h1>
@@ -20,10 +35,10 @@
   .header {
     width: 100vw;
     height: 50px;
-    position: fixed;
+    /* position: fixed; */
     background-color: #314fe6;
     display: flex;
-    padding: 5px 10px;
+    padding: 5px;
     box-sizing: border-box;
     color: #fff;
     z-index: 50;
@@ -35,10 +50,7 @@
 
   .left,
   .right {
-    width: 50px;
-  }
-  .left {
-    padding-top: 5px;
+    width: 40px;
   }
 
   h1 {
@@ -49,7 +61,7 @@
     text-align: center;
   }
 
-  button.profile {
+  button {
     height: 40px;
     width: 40px;
     margin: 0;
@@ -58,7 +70,14 @@
     border-radius: 50%;
     background-color: transparent;
     overflow: hidden;
+  }
+
+  button.profile {
     padding: 0;
+  }
+
+  button.back {
+    padding: 10px;
   }
 
   .profile > img {
@@ -66,4 +85,8 @@
     height: 40px;
   }
 
+  .back > img {
+    width: 20px;
+    height: 20px;
+  }
 </style>
