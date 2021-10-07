@@ -1,8 +1,13 @@
 <script>
   import { fly } from 'svelte/transition'
+  import EditValueModal from './EditValueModal.svelte'
 
   export let tableData
   export let tableHead
+
+  let isModalOpen = false
+
+  const update = (date, prop, value) => {}
 </script>
 
 <div class="wrapper" transition:fly={{ y: window.screen.height, opacity: 100 }}>
@@ -23,7 +28,11 @@
       {#each tableData as row}
         <tr>
           {#each row as d}
-            <td>{d}</td>
+            <td
+              on:click={() => {
+                isModalOpen = true
+              }}>{d}</td
+            >
           {/each}
           <td />
         </tr>
@@ -35,6 +44,16 @@
       <img src="/images/icons/add-column.svg" alt="add-row" />
     </button>
   </div>
+  {#if isModalOpen}
+    <EditValueModal
+      property="fat"
+      date="2019-05-02"
+      originalValue="19"
+      close={() => {
+        isModalOpen = false
+      }}
+    />
+  {/if}
 </div>
 
 <style>
@@ -127,12 +146,12 @@
   }
 
   .bottom-panel {
-      width: 100%;
-      text-align: center;
-      position: sticky;
-      bottom: 0;
-      border-top: 1px solid rgb(235 233 240);
-      background-color: #fff;
-      z-index: 3;
+    width: 100%;
+    text-align: center;
+    position: sticky;
+    bottom: 0;
+    border-top: 1px solid rgb(235 233 240);
+    background-color: #fff;
+    z-index: 3;
   }
 </style>
