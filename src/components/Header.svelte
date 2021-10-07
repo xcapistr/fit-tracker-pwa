@@ -7,6 +7,8 @@
   export let goBack
 
   const navigate = useNavigate()
+
+  let isFilterApplied = false
 </script>
 
 <div class="header">
@@ -23,7 +25,7 @@
     {:else}
       <button
         class="back"
-        on:click={goBack}
+        on:click={()=>{isFilterApplied = !isFilterApplied}}
         out:scale
         in:scale={{ delay: 400 }}
       >
@@ -34,8 +36,10 @@
     <!-- <pwa-install style="margin: 0 auto" /> -->
   </div>
   <div class="center">
-    <h1>FitTracker</h1>
-    <p>2020.01.01 - 2020.12.31</p>
+    <h1 class:small={isFilterApplied}>FitTracker</h1>
+    {#if isFilterApplied}
+       <p transition:scale>2020.01.01 - 2020.12.31</p>
+    {/if}
   </div>
   <div class="right">
     <button class="profile" on:click={() => {$user = null; navigate('/login');}}>
@@ -59,9 +63,7 @@
 
   .center {
     flex: 1;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+    position: relative;
   }
 
   .left,
@@ -70,15 +72,27 @@
   }
 
   h1 {
+    position: absolute;
     margin: 0;
-    font-size: 14px;
+    font-size: 20px;
     font-weight: normal;
-    text-align: center;
     padding: 0;
+    top: 10px;
+    width: 100%;
     outline: none;
+    text-align: center;
+    transition: transform .3s ease-out;
+  }
+
+  h1.small {
+    transform: translateY(-12px) scale(.7);
   }
 
   p {
+    position: absolute;
+    top: 18px;
+    width: 100%;
+    text-align: center;
     margin: 0;
     font-size: 16px;
   }

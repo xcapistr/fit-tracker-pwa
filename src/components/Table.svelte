@@ -13,8 +13,8 @@
           <th>{h}</th>
         {/each}
         <th>
-          <button class="add-button">
-            <img src="/images/icons/add-outline.svg" alt="add" />
+          <button class="add-button column">
+            <img src="/images/icons/add-column.svg" alt="add-column" />
           </button>
         </th>
       </tr>
@@ -28,21 +28,13 @@
           <td />
         </tr>
       {/each}
-      <tr>
-        <td>
-          <button class="add-button">
-            <img src="/images/icons/add-outline.svg" alt="add" />
-          </button>
-        </td>
-        {#each tableHead as col}
-          <td />
-        {/each}
-      </tr>
     </tbody>
   </table>
-  <br />
-  <br />
-  <br />
+  <div class="bottom-panel">
+    <button class="add-button row">
+      <img src="/images/icons/add-column.svg" alt="add-row" />
+    </button>
+  </div>
 </div>
 
 <style>
@@ -74,6 +66,8 @@
 
   th:last-child {
     right: 0;
+    width: 40px;
+    padding-right: 5px;
   }
 
   tr > td:first-child,
@@ -83,14 +77,7 @@
     z-index: 2;
   }
 
-  tr:last-child > td {
-    position: sticky;
-    bottom: 0;
-    background-color: #fff !important;
-    box-shadow: inset 0 1px 0 0 rgb(235, 233, 240);
-  }
-
-  tr:not(:last-child) > td:first-child {
+  tr > td:first-child {
     z-index: 2;
     box-shadow: inset -1px 0 0 0 rgb(235, 233, 240);
   }
@@ -114,18 +101,38 @@
   }
 
   .add-button {
-    width: 30px;
-    height: 30px;
+    width: 40px;
+    height: 40px;
     border: none;
-    border-radius: 15px;
     outline: none;
-    background-color: #999;
     padding: 5px;
     margin: 0;
+    border-radius: 50%;
   }
 
   .add-button > img {
-    width: 20px;
-    height: 20px;
+    width: 30px;
+    height: 30px;
+  }
+
+  .add-button.row {
+    margin: 10px auto;
+    width: 80px;
+    padding: 5px 25px;
+    border-radius: 20px;
+  }
+
+  .add-button.row > img {
+    transform: rotate(90deg);
+  }
+
+  .bottom-panel {
+      width: 100%;
+      text-align: center;
+      position: sticky;
+      bottom: 0;
+      border-top: 1px solid rgb(235 233 240);
+      background-color: #fff;
+      z-index: 3;
   }
 </style>
