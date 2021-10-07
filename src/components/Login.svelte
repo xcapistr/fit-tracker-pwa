@@ -1,13 +1,16 @@
 <script>
-  import {
-    getAuth,
-    signInWithPopup,
-    GoogleAuthProvider
-  } from 'firebase/auth'
+  import { user } from "../store";
+  import { useNavigate } from 'svelte-navigator'
+  import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 
+  // must be here for now (to establish db connection)
   import db from '../db'
 
-  export let setUser
+  const navigate = useNavigate()
+
+  if ($user) {
+    navigate('/')
+  }
 
   const googleLogIn = async () => {
     const provider = new GoogleAuthProvider()
@@ -15,23 +18,17 @@
     const auth = getAuth()
 
     const signInResult = await signInWithPopup(auth, provider)
-    const uid = signInResult.user.uid
-    const credential = GoogleAuthProvider.credentialFromResult(signInResult)
-    const token = signInResult.user.accessToken
 
-    setUser({
-        accessToken: signInResult.user.accessToken,
-        uid: signInResult.user.uid,
-        name: signInResult.user.displayName,
-        photoURL: signInResult.user.photoURL
-    })
+    $user = {
+      accessToken: signInResult.user.accessToken,
+      uid: signInResult.user.uid,
+      name: signInResult.user.displayName,
+      photoURL: signInResult.user.photoURL
+    }
 
-    console.log({
-        accessToken: signInResult.user.accessToken,
-        uid: signInResult.user.uid,
-        name: signInResult.user.displayName,
-        photoURL: signInResult.user.photoURL
-    });
+    console.log($user)
+
+    navigate('/')
   }
 
   // const logIn = () => {
@@ -55,7 +52,9 @@
 <div class="wrapper">
   <div class="card">
     <h2 class="title">Login</h2>
-    <button on:click={googleLogIn} class="google-login-btn">Login with Google</button>
+    <button on:click={googleLogIn} class="google-login-btn"
+      >Login with Google</button
+    >
   </div>
 </div>
 
@@ -78,6 +77,7 @@
 
   .title {
     margin-top: 0;
+    outline: none;
   }
 
   .google-login-btn {

@@ -1,20 +1,17 @@
 <script>
   import { fly } from 'svelte/transition'
+
+  export let tableData
+  export let tableHead
 </script>
 
-<div
-  class="wrapper"
-  transition:fly={{ y: window.screen.height, opacity: 100 }}
->
+<div class="wrapper" transition:fly={{ y: window.screen.height, opacity: 100 }}>
   <table>
     <thead>
       <tr>
-        <th>Date</th>
-        <th>Weight</th>
-        <th>Fat</th>
-        <th>Muscles</th>
-        <th>BMI</th>
-        <th>Water</th>
+        {#each tableHead as h}
+          <th>{h}</th>
+        {/each}
         <th>
           <button class="add-button">
             <img src="/images/icons/add-outline.svg" alt="add" />
@@ -23,117 +20,23 @@
       </tr>
     </thead>
     <tbody>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
-      <tr>
-        <td>1.3.<br />2022</td>
-        <td>83kg</td>
-        <td>18%</td>
-        <td>30kg</td>
-        <td>40</td>
-        <td>60%</td>
-        <td />
-      </tr>
+      {#each tableData as row}
+        <tr>
+          {#each row as d}
+            <td>{d}</td>
+          {/each}
+          <td />
+        </tr>
+      {/each}
       <tr>
         <td>
           <button class="add-button">
             <img src="/images/icons/add-outline.svg" alt="add" />
           </button>
         </td>
-        <td />
-        <td />
-        <td />
-        <td />
-        <td />
-        <td />
+        {#each tableHead as col}
+          <td />
+        {/each}
       </tr>
     </tbody>
   </table>

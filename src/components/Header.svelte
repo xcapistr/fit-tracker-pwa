@@ -1,9 +1,12 @@
 <script>
-  import { fly } from 'svelte/transition'
+  import { useNavigate } from 'svelte-navigator'
+  import { fly, scale } from 'svelte/transition'
+  import { user } from '../store'
 
-  export let user
   export let isTableOpen
   export let goBack
+
+  const navigate = useNavigate()
 </script>
 
 <div class="header">
@@ -12,10 +15,19 @@
       <button
         class="back"
         on:click={goBack}
-        in:fly={{ x: -40, delay: 300 }}
+        in:fly={{ x: -40, delay: 400 }}
         out:fly={{ x: -40 }}
       >
         <img src="/images/icons/chevron-back-outline.svg" alt="back" />
+      </button>
+    {:else}
+      <button
+        class="back"
+        on:click={goBack}
+        out:scale
+        in:scale={{ delay: 400 }}
+      >
+        <img src="/images/icons/calendar-outline.svg" alt="calendar" />
       </button>
     {/if}
 
@@ -23,10 +35,11 @@
   </div>
   <div class="center">
     <h1>FitTracker</h1>
+    <p>2020.01.01 - 2020.12.31</p>
   </div>
   <div class="right">
-    <button class="profile">
-      <img src={user?.photoURL} alt="profile" />
+    <button class="profile" on:click={() => {$user = null; navigate('/login');}}>
+      <img src={$user?.photoURL} alt="profile" />
     </button>
   </div>
 </div>
@@ -46,6 +59,9 @@
 
   .center {
     flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .left,
@@ -55,10 +71,16 @@
 
   h1 {
     margin: 0;
-    font-size: 20px;
+    font-size: 14px;
     font-weight: normal;
-    line-height: 40px;
     text-align: center;
+    padding: 0;
+    outline: none;
+  }
+
+  p {
+    margin: 0;
+    font-size: 16px;
   }
 
   button {
