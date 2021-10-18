@@ -1,21 +1,38 @@
 <script>
   import { fly } from 'svelte/transition'
-  import EditValueModal from './EditValueModal.svelte'
+  import { RouterOutlet, RouterLink } from 'svelte-easyroute'
+  import { user, userData } from '../store'
 
-  export let tableData
-  export let tableHead
+  const addRow = async () => {
+    const today = new Date().toISOString().split('T')[0]
+    if (!$userData.firebase.logs[today]) {
+      userData.reload({
+        ...$userData.firebase,
+        logs: {
+          ...$userData.firebase.logs,
+          [new Date().toISOString().split('T')[0]]: {}
+        }
+      })
 
-  let isModalOpen = false
-
-  const update = (date, prop, value) => {}
+      const uid = $user?.uid
+      const authQuery = $user?.accessToken ? `?auth=${$user.accessToken}` : ''
+      await fetch(
+        `https://fit-tracker-a6ff2-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/logs.json${authQuery}`,
+        {
+          method: 'PATCH',
+          body: JSON.stringify({ [today]: null })
+        }
+      )
+    }
+  }
 </script>
 
 <div class="wrapper" transition:fly={{ y: window.screen.height, opacity: 100 }}>
   <table>
     <thead>
       <tr>
-        {#each tableHead as h}
-          <th>{h}</th>
+        {#each $userData.tableData.columns as column}
+          <th>{column}</th>
         {/each}
         <th>
           <button class="add-button column">
@@ -25,14 +42,15 @@
       </tr>
     </thead>
     <tbody>
-      {#each tableData as row}
+      {#each $userData.tableData.rows as row}
         <tr>
-          {#each row as d}
-            <td
-              on:click={() => {
-                isModalOpen = true
-              }}>{d}</td
-            >
+          {#each row as d, i}
+            <td>
+              <RouterLink
+                to={`/table/edit/${row[0]}/${$userData.tableData.columns[i]}`}
+                >{d || '-'}</RouterLink
+              >
+            </td>
           {/each}
           <td />
         </tr>
@@ -40,20 +58,12 @@
     </tbody>
   </table>
   <div class="bottom-panel">
-    <button class="add-button row">
+    <button class="add-button row" on:click={addRow}>
       <img src="/images/icons/add-column.svg" alt="add-row" />
     </button>
   </div>
-  {#if isModalOpen}
-    <EditValueModal
-      property="fat"
-      date="2019-05-02"
-      originalValue="19"
-      close={() => {
-        isModalOpen = false
-      }}
-    />
-  {/if}
+
+  <RouterOutlet />
 </div>
 
 <style>

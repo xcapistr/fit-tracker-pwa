@@ -1,15 +1,13 @@
 <script>
-  import { user } from "../store";
-  import { useNavigate } from 'svelte-navigator'
+  import { user } from '../store'
+  import { router } from '../router.js'
   import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
 
   // must be here for now (to establish db connection)
   import db from '../db'
 
-  const navigate = useNavigate()
-
   if ($user) {
-    navigate('/')
+    router.push('/')
   }
 
   const googleLogIn = async () => {
@@ -28,7 +26,7 @@
 
     console.log($user)
 
-    navigate('/')
+    router.push('/')
   }
 
   // const logIn = () => {

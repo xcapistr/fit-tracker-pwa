@@ -1,11 +1,13 @@
 <script>
+  import { router } from '../router'
   import { chart } from 'svelte-apexcharts'
   export let name
   export let series
   export let height
   export let showTable
 
-  const options = {
+  // $ updates when series props are updated
+  $: options = {
     series,
     markers: {
       size: 5
@@ -48,7 +50,7 @@
   <h2>{name}</h2>
   <div use:chart={options} />
   {#if showTable}
-    <button class="show-table-btn" on:click={showTable}>
+    <button class="show-table-btn" on:click={() => router.push('/table')}>
       <img src="/images/icons/table-outline.svg" alt="table" />
     </button>
   {/if}

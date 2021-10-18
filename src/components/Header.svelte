@@ -1,12 +1,13 @@
 <script>
-  import { useNavigate } from 'svelte-navigator'
+  import { router } from '../router.js'
   import { fly, scale } from 'svelte/transition'
   import { user } from '../store'
 
-  export let isTableOpen
-  export let goBack
+  router.afterEach((to, from) => {
+    isTableOpen = to.name !== 'Home'
+  })
 
-  const navigate = useNavigate()
+  let isTableOpen = router.currentRoute.name !== 'Home'
 
   let isFilterApplied = false
 </script>
@@ -16,8 +17,8 @@
     {#if isTableOpen}
       <button
         class="back"
-        on:click={goBack}
-        in:fly={{ x: -40, delay: 400 }}
+        on:click={() => router.back()}
+        in:fly={{ x: -40, delay: 300 }}
         out:fly={{ x: -40 }}
       >
         <img src="/images/icons/chevron-back-outline.svg" alt="back" />
@@ -25,7 +26,9 @@
     {:else}
       <button
         class="back"
-        on:click={()=>{isFilterApplied = !isFilterApplied}}
+        on:click={() => {
+          isFilterApplied = !isFilterApplied
+        }}
         out:scale
         in:scale={{ delay: 400 }}
       >
@@ -38,11 +41,17 @@
   <div class="center">
     <h1 class:small={isFilterApplied}>FitTracker</h1>
     {#if isFilterApplied}
-       <p transition:scale>2020.01.01 - 2020.12.31</p>
+      <p transition:scale>2020.01.01 - 2020.12.31</p>
     {/if}
   </div>
   <div class="right">
-    <button class="profile" on:click={() => {$user = null; navigate('/login');}}>
+    <button
+      class="profile"
+      on:click={() => {
+        $user = null
+        router.push('/login')
+      }}
+    >
       <img src={$user?.photoURL} alt="profile" />
     </button>
   </div>
@@ -81,11 +90,11 @@
     width: 100%;
     outline: none;
     text-align: center;
-    transition: transform .3s ease-out;
+    transition: transform 0.3s ease-out;
   }
 
   h1.small {
-    transform: translateY(-12px) scale(.7);
+    transform: translateY(-12px) scale(0.7);
   }
 
   p {
