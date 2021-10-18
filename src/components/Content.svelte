@@ -45,9 +45,10 @@
 
 <style>
   .content-wrapper {
-    height: calc(100vh - 50px);
     overflow-y: scroll;
     overflow-x: hidden;
     box-sizing: border-box;
+    height: calc(100vh - 50px); /* Fallback for browsers that do not support Custom Properties */
+    height: calc((var(--vh, 1vh) * 100) - 50px);
   }
 </style>
