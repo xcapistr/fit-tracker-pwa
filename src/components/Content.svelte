@@ -1,14 +1,12 @@
 <script>
-  import { router } from '../router.js'
   import { RouterOutlet } from 'svelte-easyroute'
-  import { user, userData } from '../store'
+  import { userData } from '../store'
   import Header from './Header.svelte'
   import ChartCard from './ChartCard.svelte'
   import Placeholder from './Placeholder.svelte'
+  import { getAuth } from 'firebase/auth'
 
-  if ($user === null) {
-    router.push('/login')
-  }
+  let currentUser = getAuth().currentUser
 
   const getUserData = async (uid, accessToken) => {
     const authQuery = accessToken ? `?auth=${accessToken}` : ''
@@ -19,8 +17,8 @@
     userData.reload(data)
   }
 
-  if ($user) {
-    getUserData($user?.uid, $user?.accessToken)
+  if (currentUser) {
+    getUserData(currentUser.uid, currentUser.accessToken)
   }
 </script>
 
@@ -48,7 +46,9 @@
     overflow-y: scroll;
     overflow-x: hidden;
     box-sizing: border-box;
-    height: calc(100vh - 50px); /* Fallback for browsers that do not support Custom Properties */
+    height: calc(
+      100vh - 50px
+    ); /* Fallback for browsers that do not support Custom Properties */
     height: calc((var(--vh, 1vh) * 100) - 50px);
   }
 </style>

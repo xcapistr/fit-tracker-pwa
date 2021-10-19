@@ -1,7 +1,8 @@
 <script>
   import { router } from '../router'
   import { fly } from 'svelte/transition'
-  import { user, userData } from '../store'
+  import { userData } from '../store'
+  import { getAuth } from 'firebase/auth'
 
   const { date, attr } = router.currentRoute.params
   let value = date && attr ? $userData.firebase.logs[date][attr] : null
@@ -11,8 +12,9 @@
   }
 
   const save = async () => {
-    const uid = $user?.uid
-    const authQuery = $user?.accessToken ? `?auth=${$user.accessToken}` : ''
+    const currentUser = getAuth().currentUser
+    const uid = currentUser.uid
+    const authQuery = `?auth=${currentUser.accessToken}`
     userData.reload({
       ...$userData.firebase,
       logs: {
@@ -50,7 +52,7 @@
     />
   {/if}
   <div class="btn-row">
-    <button class="cancel" on:click={()=>router.back()}>Cancel</button>
+    <button class="cancel" on:click={() => router.back()}>Cancel</button>
     <button class="save" on:click={save}>Save</button>
   </div>
 </div>

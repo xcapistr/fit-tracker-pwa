@@ -1,8 +1,6 @@
 import { writable } from 'svelte/store'
 import { formatChartData, formatTableData } from './utils'
 
-export const user = writable(null)
-
 const createUserData = () => {
   const { subscribe, set, update } = writable(null)
 

@@ -1,13 +1,28 @@
 <script>
   import { router } from '../router.js'
   import { fly, scale } from 'svelte/transition'
-  import { user, displayBackArrow } from '../store'
+  import { displayBackArrow } from '../store'
+  import { getAuth, signOut } from 'firebase/auth'
 
   router.afterEach((to, from) => {
-     // displayBackArrow has to be in store otherwise it doesn't work after first sign in
-     // afterEach hook was called but component doesn't rerender
+    // displayBackArrow has to be in store otherwise it doesn't work after first sign in
+    // afterEach hook was called but component doesn't rerender
     $displayBackArrow = to.name !== 'Home'
   })
+
+  const auth = getAuth()
+
+  const userPhotoURL = getAuth().currentUser.photoURL
+
+  const signOutUser = () => {
+    signOut(auth)
+      .then(() => {
+        router.push('/login')
+      })
+      .catch(error => {
+        // An error happened.
+      })
+  }
 
   let isFilterApplied = false
 </script>
@@ -45,14 +60,8 @@
     {/if}
   </div>
   <div class="right">
-    <button
-      class="profile"
-      on:click={() => {
-        $user = null
-        router.push('/login')
-      }}
-    >
-      <img src={$user?.photoURL} alt="profile" />
+    <button class="profile" on:click={signOutUser}>
+      <img src={userPhotoURL} alt="profile" />
     </button>
   </div>
 </div>

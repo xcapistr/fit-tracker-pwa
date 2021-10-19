@@ -1,50 +1,18 @@
 <script>
   import { user } from '../store'
   import { router } from '../router.js'
-  import { getAuth, signInWithPopup, GoogleAuthProvider } from 'firebase/auth'
-
-  // must be here for now (to establish db connection)
-  import db from '../db'
-
-  if ($user) {
-    router.push('/')
-  }
+  import {
+    getAuth,
+    GoogleAuthProvider,
+    signInWithRedirect,
+  } from 'firebase/auth'
 
   const googleLogIn = async () => {
+    // https://firebase.google.com/docs/auth/web/google-signin
     const provider = new GoogleAuthProvider()
     provider.addScope('https://www.googleapis.com/auth/userinfo.email')
-    const auth = getAuth()
-
-    const signInResult = await signInWithPopup(auth, provider)
-
-    $user = {
-      accessToken: signInResult.user.accessToken,
-      uid: signInResult.user.uid,
-      name: signInResult.user.displayName,
-      photoURL: signInResult.user.photoURL
-    }
-
-    console.log($user)
-
-    router.push('/')
+    await signInWithRedirect(getAuth(), provider)
   }
-
-  // const logIn = () => {
-  //   const auth = getAuth()
-  //   const email = 'test@test.test'
-  //   const password = '123456'
-  //   signInWithEmailAndPassword(auth, email, password)
-  //     .then(userCredential => {
-  //       // Signed in
-  //       user = userCredential.user
-  //       console.log('user:', user)
-  //     })
-  //     .catch(error => {
-  //       const errorCode = error.code
-  //       const errorMessage = error.message
-  //       console.log(errorMessage)
-  //     })
-  // }
 </script>
 
 <div class="wrapper">

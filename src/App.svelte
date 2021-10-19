@@ -1,6 +1,36 @@
 <script>
   import { EasyrouteProvider, RouterOutlet } from 'svelte-easyroute'
   import { router } from './router'
+  import { user } from './store'
+  import { getAuth, onAuthStateChanged } from 'firebase/auth'
+  // must be here for now (to establish db connection)
+  import './db'
+  import { push } from '@firebase/database'
+
+  const currentUser = getAuth().currentUser
+
+  console.log('currentUser', currentUser)
+
+  if (currentUser) {
+    router.push('/')
+  } else {
+    router.push('/login')
+  }
+
+  onAuthStateChanged(getAuth(), userInfo => {
+    console.log('userChanged', userInfo, getAuth())
+    if (userInfo) {
+      router.push('/')
+      $user = {
+        accessToken: userInfo.accessToken,
+        uid: userInfo.uid,
+        name: userInfo.displayName,
+        photoURL: userInfo.photoURL
+      }
+    } else {
+      push('/login')
+    }
+  })
 </script>
 
 <main>
