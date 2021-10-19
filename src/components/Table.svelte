@@ -1,7 +1,8 @@
 <script>
   import { fly } from 'svelte/transition'
   import { RouterOutlet, RouterLink } from 'svelte-easyroute'
-  import { user, userData } from '../store'
+  import { userData } from '../store'
+  import { getAuth } from 'firebase/auth'
 
   const addRow = async () => {
     const today = new Date().toISOString().split('T')[0]
@@ -14,8 +15,10 @@
         }
       })
 
-      const uid = $user?.uid
-      const authQuery = $user?.accessToken ? `?auth=${$user.accessToken}` : ''
+      const currentUser = getAuth().currentUser
+
+      const uid = currentUser.uid
+      const authQuery = `?auth=${currentUser.accessToken}`
       await fetch(
         `https://fit-tracker-a6ff2-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/logs.json${authQuery}`,
         {

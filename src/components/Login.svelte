@@ -1,6 +1,4 @@
 <script>
-  import { user } from '../store'
-  import { router } from '../router.js'
   import {
     getAuth,
     GoogleAuthProvider,
