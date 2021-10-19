@@ -1,20 +1,20 @@
 <script>
   import { router } from '../router.js'
   import { fly, scale } from 'svelte/transition'
-  import { user } from '../store'
+  import { user, displayBackArrow } from '../store'
 
   router.afterEach((to, from) => {
-    isTableOpen = to.name !== 'Home'
+     // displayBackArrow has to be in store otherwise it doesn't work after first sign in
+     // afterEach hook was called but component doesn't rerender
+    $displayBackArrow = to.name !== 'Home'
   })
-
-  let isTableOpen = router.currentRoute.name !== 'Home'
 
   let isFilterApplied = false
 </script>
 
 <div class="header">
   <div class="left">
-    {#if isTableOpen}
+    {#if $displayBackArrow}
       <button
         class="back"
         on:click={() => router.back()}

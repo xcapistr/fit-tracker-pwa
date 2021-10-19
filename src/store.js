@@ -9,10 +9,8 @@ const createUserData = () => {
   return {
     subscribe,
     reload: (data) => {
-      console.log('reload')
       const tableData = formatTableData(data)
       const chartsData = formatChartData(data)
-      console.log('formatted data:', tableData, chartsData)
       set({
         firebase: data,
         tableData,
@@ -23,3 +21,5 @@ const createUserData = () => {
 }
 
 export const userData = createUserData()
+
+export const displayBackArrow = writable(false)
