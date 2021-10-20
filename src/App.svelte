@@ -8,8 +8,6 @@
 
   const currentUser = getAuth().currentUser
 
-  console.log('currentUser', currentUser)
-
   if (currentUser) {
     router.push('/')
   } else {
@@ -17,7 +15,6 @@
   }
 
   onAuthStateChanged(getAuth(), userInfo => {
-    console.log('userChanged', userInfo, getAuth())
     if (userInfo) {
       router.push('/')
     } else {

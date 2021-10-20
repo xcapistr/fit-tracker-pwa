@@ -3,6 +3,8 @@ import Content from './components/Content.svelte'
 import Login from './components/Login.svelte'
 import Table from './components/Table.svelte'
 import EditValue from './components/EditValue.svelte'
+import EditColumn from './components/EditColumn.svelte'
+import EditRow from './components/EditRow.svelte'
 
 const routes = [
   {
@@ -19,6 +21,26 @@ const routes = [
                     path: 'edit/:date/:attr',
                     component: EditValue,
                     name: 'Edit'
+                },
+                {
+                    path: 'add-row',
+                    component: EditRow,
+                    name: 'Add row'
+                },
+                {
+                    path: 'edit-row/:date',
+                    component: EditRow,
+                    name: 'Edit row'
+                },
+                {
+                    path: 'add-column',
+                    component: EditColumn,
+                    name: 'Add column'
+                },
+                {
+                    path: 'edit-column/:attribute',
+                    component: EditColumn,
+                    name: 'Edit column'
                 }
             ]
         }

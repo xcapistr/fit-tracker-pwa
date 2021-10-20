@@ -41,16 +41,7 @@
     <h2 class="prop-name" id="prop-name">{attr}</h2>
     <p class="date" id="date">{date}</p>
   </div>
-  {#if attr === 'date'}
-    <input type="date" bind:value aria-labelledby="date prop-name" use:focus />
-  {:else}
-    <input
-      type="number"
-      bind:value
-      aria-labelledby="date prop-name"
-      use:focus
-    />
-  {/if}
+  <input type="number" bind:value aria-labelledby="date prop-name" use:focus />
   <div class="btn-row">
     <button class="cancel" on:click={() => router.back()}>Cancel</button>
     <button class="save" on:click={save}>Save</button>

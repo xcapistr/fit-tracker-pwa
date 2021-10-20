@@ -2,31 +2,33 @@
   import { fly } from 'svelte/transition'
   import { RouterOutlet, RouterLink } from 'svelte-easyroute'
   import { userData } from '../store'
-  import { getAuth } from 'firebase/auth'
+  import { router } from '../router'
+
+  const getNewDate = () => {
+    let newDate
+    let i = 0
+    do {
+      newDate = (d => new Date(d.setDate(d.getDate() + i)))(new Date())
+        .toISOString()
+        .split('T')[0]
+      i++
+    } while (
+      $userData.firebase.logs[newDate]
+    )
+
+    return newDate
+  }
 
   const addRow = async () => {
-    const today = new Date().toISOString().split('T')[0]
-    if (!$userData.firebase.logs[today]) {
-      userData.reload({
-        ...$userData.firebase,
-        logs: {
-          ...$userData.firebase.logs,
-          [new Date().toISOString().split('T')[0]]: {}
-        }
-      })
+    const newDate = getNewDate()
 
-      const currentUser = getAuth().currentUser
-
-      const uid = currentUser.uid
-      const authQuery = `?auth=${currentUser.accessToken}`
-      await fetch(
-        `https://fit-tracker-a6ff2-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}/logs.json${authQuery}`,
-        {
-          method: 'PATCH',
-          body: JSON.stringify({ [today]: null })
-        }
-      )
-    }
+    userData.reload({
+      ...$userData.firebase,
+      logs: {
+        ...$userData.firebase.logs,
+        [newDate]: {}
+      }
+    })
   }
 </script>
 
@@ -34,11 +36,22 @@
   <table>
     <thead>
       <tr>
-        {#each $userData.tableData.columns as column}
-          <th>{column}</th>
+        {#each $userData.tableData.columns as column, i}
+          <th>
+            {#if i}
+              <RouterLink to={`/table/edit-column/${column}`}
+                >{column}</RouterLink
+              >
+            {:else}
+              {column}
+            {/if}
+          </th>
         {/each}
         <th>
-          <button class="add-button column">
+          <button
+            class="add-button column"
+            on:click={() => router.push('/table/add-column')}
+          >
             <img src="/images/icons/add-column.svg" alt="add-column" />
           </button>
         </th>
@@ -49,10 +62,14 @@
         <tr>
           {#each row as d, i}
             <td>
-              <RouterLink
-                to={`/table/edit/${row[0]}/${$userData.tableData.columns[i]}`}
-                >{d || '-'}</RouterLink
-              >
+              {#if i}
+                <RouterLink
+                  to={`/table/edit/${row[0]}/${$userData.tableData.columns[i]}`}
+                  >{d || '-'}</RouterLink
+                >
+              {:else}
+                <RouterLink to={`/table/edit-row/${d}`}>{d}</RouterLink>
+              {/if}
             </td>
           {/each}
           <td />
