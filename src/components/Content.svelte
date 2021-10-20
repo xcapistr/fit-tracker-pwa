@@ -8,12 +8,46 @@
 
   let currentUser = getAuth().currentUser
 
+  const createNewUser = async (uid, accessToken) => {
+    const newData = {
+      [uid]: {
+        logs: {
+          [(( d => new Date(d.setDate(d.getDate()-7)) )(new Date)).toISOString().split('T')[0]]: {
+            weight: 50
+          },
+          [new Date().toISOString().split('T')[0]]: {
+            weight: 49
+          }
+        },
+        attributes: {
+          weight: {
+            color: "#314fe6",
+            units: "kg"
+          }
+        }
+      }
+    }
+    await fetch(
+      `https://fit-tracker-a6ff2-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json?auth=${accessToken}`,
+      {
+        method: 'PUT',
+        body: JSON.stringify(newData[uid])
+      }
+    )
+    userData.reload(newData[uid])
+  }
+
   const getUserData = async (uid, accessToken) => {
     const authQuery = accessToken ? `?auth=${accessToken}` : ''
     const response = await fetch(
       `https://fit-tracker-a6ff2-default-rtdb.europe-west1.firebasedatabase.app/users/${uid}.json${authQuery}`
     )
     const data = await response.json()
+
+    if (response.ok && data === null) {
+      createNewUser(uid, accessToken)
+      return
+    }
     userData.reload(data)
   }
 
