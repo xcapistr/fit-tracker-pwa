@@ -41,7 +41,7 @@
     <h2 class="prop-name" id="prop-name">{attr}</h2>
     <p class="date" id="date">{date}</p>
   </div>
-  <input type="number" bind:value aria-labelledby="date prop-name" use:focus />
+  <input type="number" inputmode="decimal" bind:value aria-labelledby="date prop-name" use:focus/>
   <div class="btn-row">
     <button class="cancel" on:click={() => router.back()}>Cancel</button>
     <button class="save" on:click={save}>Save</button>

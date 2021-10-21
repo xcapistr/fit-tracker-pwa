@@ -122,15 +122,26 @@
     bind:value={attributeName}
     aria-labelledby="attr-name"
     use:focus
+    tabindex="0"
   />
   <div class="label-row">
     <h2 class="prop-name" id="attr-units">Units</h2>
   </div>
-  <input type="text" bind:value={units} aria-labelledby="attr-units" />
+  <input
+    type="text"
+    bind:value={units}
+    aria-labelledby="attr-units"
+    tabindex="0"
+  />
   <div class="label-row">
     <h2 class="prop-name" id="attr-color">Color</h2>
   </div>
-  <input type="text" bind:value={color} aria-labelledby="attr-color" />
+  <input
+    type="text"
+    bind:value={color}
+    aria-labelledby="attr-color"
+    tabindex="0"
+  />
   <div class="btn-row">
     <button class="cancel" on:click={() => router.back()}>Cancel</button>
     <button class="save" on:click={save}>Save</button>
