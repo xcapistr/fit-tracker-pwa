@@ -4,6 +4,8 @@
   import { userData } from '../store'
   import { router } from '../router'
 
+  let wrapperEl
+
   const getNewDate = () => {
     let newDate
     let i = 0
@@ -12,9 +14,7 @@
         .toISOString()
         .split('T')[0]
       i++
-    } while (
-      $userData.firebase.logs[newDate]
-    )
+    } while ($userData.firebase.logs[newDate])
 
     return newDate
   }
@@ -29,10 +29,15 @@
         [newDate]: {}
       }
     })
+    wrapperEl.scrollTo(0, wrapperEl.scrollHeight)
   }
 </script>
 
-<div class="wrapper" transition:fly={{ y: window.screen.height, opacity: 100 }}>
+<div
+  class="wrapper"
+  transition:fly={{ y: window.screen.height, opacity: 100 }}
+  bind:this={wrapperEl}
+>
   <table>
     <thead>
       <tr>
@@ -82,14 +87,14 @@
       <img src="/images/icons/add-column.svg" alt="add-row" />
     </button>
   </div>
-
+  <div class="bottom-space"/>
   <RouterOutlet />
 </div>
 
 <style>
   .wrapper {
-    height: calc(100vh - 50px);
-    overflow: scroll;
+    height: calc(100% - 50px);
+    overflow-y: scroll;
     box-sizing: border-box;
     position: absolute;
     top: 50px;
@@ -180,8 +185,14 @@
     text-align: center;
     position: sticky;
     bottom: 0;
+    left: 0;
     border-top: 1px solid rgb(235 233 240);
     background-color: #fff;
     z-index: 3;
+  }
+
+  .bottom-space {
+    width: 100%;
+    height: 100px;
   }
 </style>
