@@ -54,8 +54,8 @@
     <!-- <pwa-install style="margin: 0 auto" /> -->
   </div>
   <div class="center">
-    <h1 class:small={isFilterApplied}>FitTracker</h1>
-    {#if isFilterApplied}
+    <h1 class:small={isFilterApplied && !$displayBackArrow}>FitTracker</h1>
+    {#if isFilterApplied && !$displayBackArrow}
       <p transition:scale>2020.01.01 - 2020.12.31</p>
     {/if}
   </div>

@@ -84,13 +84,22 @@
           <td />
         </tr>
       {/each}
+      <tr>
+        {#each $userData.tableData.columns as column}
+          {#if column === 'date'}
+            <td>
+              <button class="add-button row" on:click={addRow}>
+                <img src="/images/icons/add-column.svg" alt="add-row" />
+              </button>
+            </td>
+          {:else}
+            <td />
+          {/if}
+        {/each}
+        <td />
+      </tr>
     </tbody>
   </table>
-  <div class="bottom-panel">
-    <button class="add-button row" on:click={addRow}>
-      <img src="/images/icons/add-column.svg" alt="add-row" />
-    </button>
-  </div>
   <div class="bottom-space" />
   <RouterOutlet />
 </div>
@@ -112,6 +121,7 @@
     border-collapse: collapse;
     background-color: #fff;
     font-size: 14px;
+    border-bottom: 1px solid rgb(235, 233, 240);
   }
 
   th {
@@ -126,6 +136,7 @@
     right: 0;
     width: 40px;
     padding-right: 5px;
+    box-shadow: inset 1px -1px 0 0 rgb(235, 233, 240);
   }
 
   tr > td:first-child,
@@ -138,7 +149,6 @@
   tr > td:first-child {
     z-index: 2;
     box-shadow: inset -1px 0 0 0 rgb(235, 233, 240);
-    text-align: left;
   }
 
   tr > th:first-child {
@@ -159,6 +169,18 @@
     background-color: rgb(241, 240, 243);
   }
 
+  tr:last-child > td {
+    position: sticky;
+    bottom: 0;
+    box-shadow: inset 0 1px 0 0 rgb(235, 233, 240);
+  }
+
+  tr:last-child > td:first-child {
+    z-index: 3;
+    background-color: #fff;
+    box-shadow: inset -1px 1px 0 0 rgb(235, 233, 240);
+  }
+
   .add-button {
     width: 40px;
     height: 40px;
@@ -166,7 +188,7 @@
     outline: none;
     padding: 5px;
     margin: 0;
-    border-radius: 50%;
+    border-radius: 10px;
   }
 
   .add-button > img {
@@ -175,25 +197,12 @@
   }
 
   .add-button.row {
-    margin: 10px auto;
-    width: 80px;
-    padding: 5px 25px;
-    border-radius: 20px;
+    padding: 5px;
+    border-radius: 10px;
   }
 
   .add-button.row > img {
     transform: rotate(90deg);
-  }
-
-  .bottom-panel {
-    width: 100%;
-    text-align: center;
-    position: sticky;
-    bottom: 0;
-    left: 0;
-    border-top: 1px solid rgb(235 233 240);
-    background-color: #fff;
-    z-index: 3;
   }
 
   .bottom-space {

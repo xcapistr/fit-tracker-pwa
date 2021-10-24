@@ -143,7 +143,7 @@
   <div class="btn-row">
     {#if attribute}
       <Button
-        on:click={() => router.back()}
+        on:click={remove}
         label="Delete"
         variant="danger"
         class="button"
