@@ -73,7 +73,11 @@
                   >{d || '-'}</RouterLink
                 >
               {:else}
-                <RouterLink to={`/table/edit-row/${d}`}>{d}</RouterLink>
+                <RouterLink to={`/table/edit-row/${d}`}
+                  >{d.split('-')[0]}<br />{d.split('-')[2]}.{d.split(
+                    '-'
+                  )[1]}.</RouterLink
+                >
               {/if}
             </td>
           {/each}
@@ -87,7 +91,7 @@
       <img src="/images/icons/add-column.svg" alt="add-row" />
     </button>
   </div>
-  <div class="bottom-space"/>
+  <div class="bottom-space" />
   <RouterOutlet />
 </div>
 
@@ -134,6 +138,7 @@
   tr > td:first-child {
     z-index: 2;
     box-shadow: inset -1px 0 0 0 rgb(235, 233, 240);
+    text-align: left;
   }
 
   tr > th:first-child {

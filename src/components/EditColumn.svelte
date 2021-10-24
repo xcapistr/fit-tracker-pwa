@@ -3,6 +3,8 @@
   import { fly } from 'svelte/transition'
   import { userData } from '../store'
   import { getAuth } from 'firebase/auth'
+  import ColorPicker from './ColorPicker.svelte'
+  import Button from './Button.svelte'
 
   const { attribute } = router.currentRoute.params
 
@@ -14,7 +16,7 @@
     : ''
   let color = attributeName
     ? $userData.firebase.attributes[attribute].color
-    : ''
+    : '#6740B4'
 
   const focus = el => {
     el.focus()
@@ -105,46 +107,49 @@
 </script>
 
 <div class="wrapper" transition:fly={{ y: 200, duration: 200 }}>
-  <div class="label-row">
-    <h2 class="prop-name" id="attr-name">Attribute name</h2>
-    {#if attribute}
-      <button class="delete" on:click={remove}
-        ><img
-          src="/images/icons/trash-bin-outline.svg"
-          alt="delete"
-          title="Delete"
-        /></button
-      >
-    {/if}
+  <div class="form-row">
+    <div class="form-item">
+      <p class="prop-name" id="attr-name">Attribute name</p>
+      <input
+        type="text"
+        bind:value={attributeName}
+        aria-labelledby="attr-name"
+        use:focus
+        tabindex="0"
+      />
+    </div>
   </div>
-  <input
-    type="text"
-    bind:value={attributeName}
-    aria-labelledby="attr-name"
-    use:focus
-    tabindex="0"
-  />
-  <div class="label-row">
-    <h2 class="prop-name" id="attr-units">Units</h2>
+  <div class="form-row">
+    <div class="form-item">
+      <p class="prop-name">Units</p>
+      <input
+        type="text"
+        bind:value={units}
+        aria-labelledby="attr-units"
+        tabindex="0"
+      />
+    </div>
+    <div class="form-item">
+      <p class="prop-name">Color</p>
+      <ColorPicker
+        {color}
+        setColor={c => {
+          color = c
+          console.log('new color', c)
+        }}
+      />
+    </div>
   </div>
-  <input
-    type="text"
-    bind:value={units}
-    aria-labelledby="attr-units"
-    tabindex="0"
-  />
-  <div class="label-row">
-    <h2 class="prop-name" id="attr-color">Color</h2>
-  </div>
-  <input
-    type="text"
-    bind:value={color}
-    aria-labelledby="attr-color"
-    tabindex="0"
-  />
   <div class="btn-row">
-    <button class="cancel" on:click={() => router.back()}>Cancel</button>
-    <button class="save" on:click={save}>Save</button>
+    {#if attribute}
+      <Button
+        on:click={() => router.back()}
+        label="Delete"
+        variant="danger"
+        class="button"
+      />
+    {/if}
+    <Button on:click={save} label="Save" variant="success" class="button" />
   </div>
 </div>
 
@@ -160,47 +165,38 @@
     padding: 20px;
   }
 
-  .label-row {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
-  }
-
   .prop-name {
     margin: 0;
   }
 
   input {
     width: 100%;
-    font-size: 24px;
-    text-align: right;
+    font-size: 20px;
     box-sizing: border-box;
   }
 
   .btn-row {
     width: 100%;
     display: flex;
+    gap: 10px;
+    margin-top: 10px;
   }
 
-  .btn-row > button {
+  .btn-row > :global(.button) {
     flex: 1;
-    margin: 0;
-    height: 40px;
   }
 
-  .delete {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    padding: 5px;
-    margin: 0;
-    border: none;
-    background-color: transparent;
+  .form-row {
+    width: 100%;
+    display: flex;
+    gap: 10px;
   }
 
-  .delete > img {
-    width: 30px;
-    height: 30px;
+  .form-row > .form-item:first-child {
+    flex: 1;
+  }
+
+  .form-row > .form-item:nth-child(2) {
+    width: 70px;
   }
 </style>

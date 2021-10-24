@@ -3,6 +3,7 @@
   import { fly } from 'svelte/transition'
   import { userData } from '../store'
   import { getAuth } from 'firebase/auth'
+  import Button from './Button.svelte'
 
   const { date } = router.currentRoute.params
   let value = date || null
@@ -58,20 +59,20 @@
 </script>
 
 <div class="wrapper" transition:fly={{ y: 200, duration: 200 }}>
-  <div class="label-row">
-    <h2 class="prop-name" id="prop-name">Date</h2>
-    <button class="delete" on:click={remove}
-      ><img
-        src="/images/icons/trash-bin-outline.svg"
-        alt="delete"
-        title="Delete"
-      /></button
-    >
+  <div class="form-row">
+    <div class="form-item">
+      <p class="prop-name" id="prop-name">Date</p>
+      <input type="date" bind:value use:focus />
+    </div>
   </div>
-  <input type="date" bind:value use:focus />
   <div class="btn-row">
-    <button class="cancel" on:click={() => router.back()}>Cancel</button>
-    <button class="save" on:click={save}>Save</button>
+    <Button
+      on:click={remove}
+      label="Delete"
+      variant="danger"
+      class="button"
+    />
+    <Button on:click={save} label="Save" variant="success" class="button" />
   </div>
 </div>
 
@@ -87,11 +88,14 @@
     padding: 20px;
   }
 
-  .label-row {
+  .form-row {
+    width: 100%;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 10px;
+    gap: 10px;
+  }
+
+  .form-row > .form-item {
+    flex: 1;
   }
 
   .prop-name {
@@ -99,35 +103,20 @@
   }
 
   input {
-    width: 100%;
-    font-size: 24px;
     text-align: right;
+    width: 100%;
+    font-size: 20px;
     box-sizing: border-box;
   }
 
   .btn-row {
     width: 100%;
     display: flex;
+    gap: 10px;
+    margin-top: 10px;
   }
 
-  .btn-row > button {
+  .btn-row > :global(.button) {
     flex: 1;
-    margin: 0;
-    height: 40px;
-  }
-
-  .delete {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    padding: 5px;
-    margin: 0;
-    border: none;
-    background-color: transparent;
-  }
-
-  .delete > img {
-    width: 30px;
-    height: 30px;
   }
 </style>

@@ -3,6 +3,7 @@
   import { fly } from 'svelte/transition'
   import { userData } from '../store'
   import { getAuth } from 'firebase/auth'
+  import Button from './Button.svelte'
 
   const { date, attr } = router.currentRoute.params
   let value = date && attr ? $userData.firebase.logs[date][attr] : null
@@ -38,13 +39,18 @@
 
 <div class="wrapper" transition:fly={{ y: 200, duration: 200 }}>
   <div class="label-row">
-    <h2 class="prop-name" id="prop-name">{attr}</h2>
+    <p class="prop-name" id="prop-name">{attr}</p>
     <p class="date" id="date">{date}</p>
   </div>
   <input type="number" inputmode="decimal" bind:value aria-labelledby="date prop-name" use:focus/>
   <div class="btn-row">
-    <button class="cancel" on:click={() => router.back()}>Cancel</button>
-    <button class="save" on:click={save}>Save</button>
+    <Button
+      on:click={()=>{value = null; save();}}
+      label="Delete"
+      variant="danger"
+      class="button"
+    />
+    <Button on:click={save} label="Save" variant="success" class="button" />
   </div>
 </div>
 
@@ -64,7 +70,7 @@
     display: flex;
     justify-content: space-between;
     align-items: center;
-    margin-bottom: 10px;
+    margin-bottom: 2px;
   }
 
   .date {
@@ -77,7 +83,7 @@
 
   input {
     width: 100%;
-    font-size: 24px;
+    font-size: 20px;
     text-align: right;
     box-sizing: border-box;
   }
@@ -85,11 +91,11 @@
   .btn-row {
     width: 100%;
     display: flex;
+    gap: 10px;
+    margin-top: 10px;
   }
 
-  button {
+  .btn-row > :global(.button) {
     flex: 1;
-    margin: 0;
-    height: 40px;
   }
 </style>
