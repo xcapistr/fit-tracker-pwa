@@ -1,6 +1,8 @@
 <script>
   import { router } from '../router'
   import { chart } from 'svelte-apexcharts'
+  import { filter } from '../store'
+  
   export let name
   export let series
   export let height
@@ -13,7 +15,9 @@
       size: 5
     },
     xaxis: {
-      type: 'datetime'
+      type: 'datetime',
+      min: $filter.dateFrom ? new Date($filter.dateFrom).getTime() : null,
+      max: $filter.dateTo ? new Date($filter.dateTo).getTime() : null
     },
     chart: {
       height,

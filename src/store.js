@@ -21,3 +21,5 @@ const createUserData = () => {
 export const userData = createUserData()
 
 export const displayBackArrow = writable(false)
+
+export const filter = writable({dateFrom: null, dateTo: null})

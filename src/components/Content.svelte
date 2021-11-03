@@ -12,7 +12,9 @@
     const newData = {
       [uid]: {
         logs: {
-          [(( d => new Date(d.setDate(d.getDate()-7)) )(new Date)).toISOString().split('T')[0]]: {
+          [(d => new Date(d.setDate(d.getDate() - 7)))(new Date())
+            .toISOString()
+            .split('T')[0]]: {
             weight: 50
           },
           [new Date().toISOString().split('T')[0]]: {
@@ -21,8 +23,8 @@
         },
         attributes: {
           weight: {
-            color: "#314fe6",
-            units: "kg"
+            color: '#314fe6',
+            units: 'kg'
           }
         }
       }
@@ -56,7 +58,10 @@
   }
 </script>
 
-<Header isTableOpen="false" goBack={() => {}} />
+<Header
+  isTableOpen="false"
+  toggleFilter={() => (isFilterOpened = !isFilterOpened)}
+/>
 <div class="content-wrapper">
   {#if !$userData}
     <Placeholder />
@@ -83,6 +88,5 @@
     height: calc(
       100vh - 50px
     ); /* Fallback for browsers that do not support Custom Properties */
-    height: calc((var(--vh, 1vh) * 100) - 50px);
   }
 </style>
